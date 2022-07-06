@@ -7,14 +7,6 @@ const closeModal = () => {
   clearFields();
 };
 
-/* const tempClient = {
-  nome: 'nicolas',
-  cpf: '123.456.789-10',
-  email: 'ana@ana.com',
-  cidade: 'São Paulo',
-  uf: 'MG',
-}; */
-
 const getLocalStorage = () =>
   // transforma oque foi pego do localStorage em string para objeto
   JSON.parse(localStorage.getItem('db_client')) ?? [];
@@ -46,9 +38,7 @@ const deleteClient = (index) => {
 };
 
 const isValidFields = () => {
-  /*   return document.getElementById('form').reportValidity(); 
-  CORRIGIR NO FINAL
-  */
+  return document.getElementById('form').reportValidity();
 };
 
 // interação com o layout
@@ -66,15 +56,23 @@ const saveClient = () => {
       cidade: document.getElementById('cidade').value,
       uf: document.getElementById('uf').value,
     };
-    createClient(client);
-    clearFields();
-    updateTable();
-    closeModal();
+
+    const index = document.getElementById('nome').dataset.index;
+    if (index === 'new') {
+      createClient(client);
+      clearFields();
+      updateTable();
+      closeModal();
+    } else {
+      updateClient(index, client);
+      updateTable();
+      closeModal();
+    }
   }
 };
 saveClient();
 
-const createRow = (client) => {
+const createRow = (client, index) => {
   const newRow = document.createElement('tr');
   newRow.innerHTML = `
   <td>${client.nome}</td>
@@ -83,8 +81,8 @@ const createRow = (client) => {
   <td>${client.cidade}</td>
   <td>${client.uf}</td>
   <td>
-    <button type="button" class="button green">editar</button>
-    <button type="button" class="button red">excluir</button>
+    <button type="button" class="button green" id='edit-${index}'>Editar</button>
+    <button type="button" class="button red" id='delete-${index}'>Excluir</button>
   </td>`;
 
   document.querySelector('#tableClient>tbody').appendChild(newRow);
@@ -103,7 +101,45 @@ const updateTable = () => {
 };
 updateTable();
 
+const fillFields = (client) => {
+  document.getElementById('nome').value = client.nome;
+  document.getElementById('cpfOuCnpj').value = client.cpfOuCnpj;
+  document.getElementById('email').value = client.email;
+  document.getElementById('cidade').value = client.cidade;
+  document.getElementById('uf').value = client.uf;
+  document.getElementById('nome').dataset.index = client.index;
+};
+
+const editClient = (index) => {
+  const client = readClient()[index];
+  client.index = index;
+  fillFields(client);
+  openModal();
+
+  console.log(client);
+};
+
+const editDelete = (e) => {
+  if (e.target.type === 'button') {
+    const [action, index] = e.target.id.split('-');
+
+    if (action === 'edit') {
+      editClient(index);
+    } else {
+      const client = readClient()[index];
+      const response = confirm(
+        `Deseja realmente excluir o cliente ${client.nome}`,
+      );
+      if (response) {
+        deleteClient(index);
+        updateTable();
+      }
+    }
+  }
+};
+
 // eventos
 $('#cadastrarCliente').click(openModal);
-$('#modalClose').click(closeModal);
+$('#modalClose, #cancelar').click(closeModal);
 $('#salvar').click(saveClient);
+$('#tableClient>tbody').click(editDelete);

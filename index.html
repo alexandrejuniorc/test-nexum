@@ -33,39 +33,7 @@
         </tr>
       </thead>
       <tbody>
-        <!--  <tr>
-          <td>Maria</td>
-          <td>maria@gmail.com</td>
-          <td>(11) 97165-1111</td>
-          <td>Anapolis</td>
-          <td>SP</td>
-          <td>
-            <button type="button" class="button green">editar</button>
-            <button type="button" class="button red">excluir</button>
-          </td>
-        </tr>
-        <tr>
-          <td>João Pedro</td>
-          <td>joao@gmail.com</td>
-          <td>(11) 97165-2222</td>
-          <td>Jandira</td>
-          <td>SP</td>
-          <td>
-            <button type="button" class="button green">editar</button>
-            <button type="button" class="button red">excluir</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Jose da Silva</td>
-          <td>jose@gmail.com</td>
-          <td>(11) 97165-3333</td>
-          <td>São Roque</td>
-          <td>SP</td>
-          <td>
-            <button type="button" class="button green">editar</button>
-            <button type="button" class="button red">excluir</button>
-          </td>
-        </tr> -->
+        <!-- conteúdo adicionado por js -->
       </tbody>
     </table>
     <div class="modal" id="modal">
@@ -75,7 +43,7 @@
           <span class="modal-close" id="modalClose">&#10006;</span>
         </header>
         <form id="form" class="modal-form">
-          <input id="nome" type="text" class="modal-field" placeholder="Nome do Cliente" required>
+          <input id="nome" data-index="new" type="text" class="modal-field" placeholder="Nome do Cliente" required>
           <input id="cpfOuCnpj" type="text" class="modal-field" placeholder="CPF ou CNPJ do cliente" required>
           <input id="email" type="email" class="modal-field" placeholder="e-mail do Cliente" required>
           <input id="cidade" type="text" class="modal-field" placeholder="Cidade do Cliente" required>
