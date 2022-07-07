@@ -48,7 +48,7 @@ const clearFields = () => {
 };
 
 const saveClient = () => {
-  if (openModal() && isValidFields()) {
+  if (isValidFields()) {
     const client = {
       nome: document.getElementById('nome').value,
       cpfOuCnpj: document.getElementById('cpfOuCnpj').value,
@@ -68,7 +68,7 @@ const saveClient = () => {
       updateTable();
       closeModal();
     }
-  } else null;
+  } else if (openModal() === false && isValidFields() === false) null;
 };
 saveClient();
 
