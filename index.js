@@ -7,30 +7,19 @@ const closeModal = () => {
   clearFields();
 };
 
+// pega os dados do localStorage
 const getLocalStorage = () =>
   // transforma oque foi pego do localStorage em string para objeto
   JSON.parse(localStorage.getItem('db_client')) ?? [];
 
+// pega os itens do localStorage e os transforma em string
 const setLocalStorage = (dbClient) =>
   // manda o item pro localStorage como string
   localStorage.setItem('db_client', JSON.stringify(dbClient));
 
 // CRUD - create read update delete
 
-const deleteClient = (index) => {
-  const dbClient = readClient();
-  dbClient.splice(index, 1);
-  setLocalStorage(dbClient);
-};
-
-const updateClient = (index, client) => {
-  const dbClient = readClient();
-  dbClient[index] = client;
-  setLocalStorage(dbClient);
-};
-
-const readClient = () => getLocalStorage();
-
+// create
 const createClient = (client) => {
   const dbClient = getLocalStorage();
   // adiciona item(acrescente +1) a chave criada
@@ -38,18 +27,38 @@ const createClient = (client) => {
   setLocalStorage(dbClient);
 };
 
+// read
+const readClient = () => getLocalStorage();
+
+// update
+const updateClient = (index, client) => {
+  const dbClient = readClient();
+  dbClient[index] = client;
+  setLocalStorage(dbClient);
+};
+
+// delete
+const deleteClient = (index) => {
+  const dbClient = readClient();
+  dbClient.splice(index, 1);
+  setLocalStorage(dbClient);
+};
+
+// valida se todos os campos do formulário estão preenchidos
 const isValidFields = () => {
   return document.getElementById('form').reportValidity();
 };
 
 // interação com o layout
 
+// limpa campos de pesquisa para que não abra o modal e possua os dados anteriores
 const clearFields = () => {
   const fields = document.querySelectorAll('.modal-field');
   fields.forEach((field) => (field.value = ''));
   document.getElementById('nome').dataset.index = 'new';
 };
 
+// salva os dados do usuário e manda direto para a planilha
 const saveClient = () => {
   if (isValidFields()) {
     const client = {
@@ -74,6 +83,7 @@ const saveClient = () => {
   }
 };
 
+// cria uma linha para cada usuário com seus dados
 const createRow = (client, index) => {
   const newRow = document.createElement('tr');
   newRow.innerHTML = `
@@ -90,12 +100,14 @@ const createRow = (client, index) => {
   document.querySelector('#tableClient>tbody').appendChild(newRow);
 };
 
+//  remove a linha do usuário que quiser
 const clearTable = () => {
   const rows = document.querySelectorAll('#tableClient>tbody tr');
   // apaga a própria linha
   rows.forEach((row) => row.parentNode.removeChild(row));
 };
 
+// função que é utilizada para atualizar a tabela para quando acontecer outra função
 const updateTable = () => {
   const dbClient = readClient();
   clearTable();
@@ -103,6 +115,7 @@ const updateTable = () => {
 };
 updateTable();
 
+// preenche campos
 const fillFields = (client) => {
   document.getElementById('nome').value = client.nome;
   document.getElementById('cpfOuCnpj').value = client.cpfOuCnpj;
@@ -112,6 +125,7 @@ const fillFields = (client) => {
   document.getElementById('nome').dataset.index = client.index;
 };
 
+// edita o usuário que foi clicado
 const editClient = (index) => {
   const client = readClient()[index];
   client.index = index;
@@ -121,6 +135,7 @@ const editClient = (index) => {
   console.log(client);
 };
 
+// função para editar ou remover um usuário
 const editDelete = (e) => {
   if (e.target.type === 'button') {
     const [action, index] = e.target.id.split('-');
