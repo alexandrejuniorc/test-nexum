@@ -47,7 +47,7 @@
           <input id="cpfOuCnpj" type="text" class="modal-field" placeholder="CPF ou CNPJ do cliente" required>
           <input id="email" type="email" class="modal-field" placeholder="e-mail do Cliente" required>
           <input id="cidade" type="text" class="modal-field" placeholder="Cidade do Cliente" required>
-          <input id="uf" type="text" class="modal-field" placeholder="UF do Cliente" required>
+          <input id="uf" type="text" class="modal-field" placeholder="UF do Cliente" required maxlength="2">
         </form>
         <footer class="modal-footer">
           <button id="salvar" class="button green">Salvar</button>
@@ -61,6 +61,7 @@
   </footer>
 
   <script src="./jquery/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
   <script src="index.js"></script>
 </body>
 
