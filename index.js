@@ -16,14 +16,12 @@ const setLocalStorage = (dbClient) =>
   localStorage.setItem('db_client', JSON.stringify(dbClient));
 
 // CRUD - create read update delete
-const createClient = (client) => {
-  const dbClient = getLocalStorage();
-  // adiciona item(acrescente +1) a chave criada
-  dbClient.push(client);
+
+const deleteClient = (index) => {
+  const dbClient = readClient();
+  dbClient.splice(index, 1);
   setLocalStorage(dbClient);
 };
-
-const readClient = () => getLocalStorage();
 
 const updateClient = (index, client) => {
   const dbClient = readClient();
@@ -31,9 +29,12 @@ const updateClient = (index, client) => {
   setLocalStorage(dbClient);
 };
 
-const deleteClient = (index) => {
-  const dbClient = readClient();
-  dbClient.splice(index, 1);
+const readClient = () => getLocalStorage();
+
+const createClient = (client) => {
+  const dbClient = getLocalStorage();
+  // adiciona item(acrescente +1) a chave criada
+  dbClient.push(client);
   setLocalStorage(dbClient);
 };
 
@@ -42,9 +43,11 @@ const isValidFields = () => {
 };
 
 // interação com o layout
+
 const clearFields = () => {
   const fields = document.querySelectorAll('.modal-field');
   fields.forEach((field) => (field.value = ''));
+  document.getElementById('nome').dataset.index = 'new';
 };
 
 const saveClient = () => {
@@ -58,9 +61,9 @@ const saveClient = () => {
     };
 
     const index = document.getElementById('nome').dataset.index;
-    if (index === 'new') {
+
+    if (index == 'new') {
       createClient(client);
-      clearFields();
       updateTable();
       closeModal();
     } else {
@@ -68,9 +71,8 @@ const saveClient = () => {
       updateTable();
       closeModal();
     }
-  } else if (openModal() === false && isValidFields() === false) null;
+  }
 };
-saveClient();
 
 const createRow = (client, index) => {
   const newRow = document.createElement('tr');
